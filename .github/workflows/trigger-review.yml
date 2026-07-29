@@ -1,0 +1,26 @@
+name: Trigger Slingshot Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Slingshot Workflow
+        run: |
+          curl -X POST "https://sapientaiproducts.com/api/workflows/c78393fe-638f-465b-b97c-8ea6d61dd433/run" \
+            -H "Authorization: Bearer ${{ secrets.SLINGSHOT_PAT }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "variables": {
+                "repoOwner": "${{ github.repository_owner }}",
+                "repoName": "${{ github.event.repository.name }}",
+                "prNumber": "${{ github.event.pull_request.number }}",
+                "targetBranch": "${{ github.event.pull_request.base.ref }}",
+                "sonarProjectKey": "AlekhyareddyPothula_Sample-Test",
+                "sonarOrgKey": "alekhya-reddy-pothula"
+              }
+            }'
