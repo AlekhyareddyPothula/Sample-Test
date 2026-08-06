@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Call Slingshot Workflow
         run: |
-          curl -X POST "https://sapientaiproducts.com/api/workflows/c78393fe-638f-465b-b97c-8ea6d61dd433/run" \
+          http_status=$(curl -s -o response.json -w "%{http_code}" -X POST "https://sapientaiproducts.com/api/workflows/c78393fe-638f-465b-b97c-8ea6d61dd433/run" \
             -H "Authorization: Bearer ${{ secrets.SLINGSHOT_PAT }}" \
             -H "Content-Type: application/json" \
             -d '{
@@ -23,4 +23,11 @@ jobs:
                 "sonarProjectKey": "AlekhyareddyPothula_Sample-Test",
                 "sonarOrgKey": "alekhya-reddy-pothula"
               }
-            }'
+            }')
+          echo "HTTP Status: $http_status"
+          echo "Response body:"
+          cat response.json
+          if [ "$http_status" -ge 400 ]; then
+            echo "::error::Slingshot trigger failed with status $http_status"
+            exit 1
+          fi
