@@ -11,21 +11,28 @@ jobs:
     steps:
       - name: Call Slingshot Workflow
         run: |
-          http_status=$(curl -s -o response.json -w "%{http_code}" -X POST "https://sapientaiproducts.com/api/workflows/c78393fe-638f-465b-b97c-8ea6d61dd433/run" \
+          http_status=$(curl -s -o response.json -w "%{http_code}" -X POST \
+            "https://sapientaiproducts.com/save/api/v1/tasks/1d8a3c4b-56a9-46fc-b530-0714f5d4a748/runs" \
             -H "Authorization: Bearer ${{ secrets.SLINGSHOT_PAT }}" \
-            -H "Content-Type: application/json" \
+            -H "CLIENTID: b97fbef7-cad9-4e56-9850-39e86c8fdf61" \
+            -H "PROJECTID: bf4069d7-dbe5-4cf5-ab47-dd8c3678b367" \
+            -H "Content-Type: application/json;charset=UTF-8" \
             -d '{
-              "variables": {
-                "repoOwner": "${{ github.repository_owner }}",
-                "repoName": "${{ github.event.repository.name }}",
-                "prNumber": "${{ github.event.pull_request.number }}",
-                "targetBranch": "${{ github.event.pull_request.base.ref }}",
-                "sonarProjectKey": "AlekhyareddyPothula_Sample-Test",
-                "sonarOrgKey": "alekhya-reddy-pothula"
+              "runName": "PR #${{ github.event.pull_request.number }} review",
+              "overrides": {
+                "workflow": "c78393fe-638f-465b-b97c-8ea6d61dd433",
+                "variables": {
+                  "repoOwner": "${{ github.repository_owner }}",
+                  "repoName": "${{ github.event.repository.name }}",
+                  "prNumber": "${{ github.event.pull_request.number }}",
+                  "targetBranch": "${{ github.event.pull_request.base.ref }}",
+                  "sonarProjectKey": "AlekhyareddyPothula_Sample-Test",
+                  "sonarOrgKey": "alekhya-reddy-pothula"
+                }
               }
             }')
           echo "HTTP Status: $http_status"
-          echo "Response body:"
+          echo "Response:"
           cat response.json
           if [ "$http_status" -ge 400 ]; then
             echo "::error::Slingshot trigger failed with status $http_status"
