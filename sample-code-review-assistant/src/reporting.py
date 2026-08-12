@@ -3,7 +3,6 @@ Sample module — calculate_invoice_total_for_report below is copy-pasted
 from billing.py's calculate_invoice_total, on purpose, to trigger
 SonarQube's code duplication detector for testing.
 """
-
 def calculate_invoice_total_for_report(items, tax_rate, discount_rate, shipping_fee):
     subtotal = 0
     for item in items:
