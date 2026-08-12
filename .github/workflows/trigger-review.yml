@@ -5,7 +5,6 @@ on:
     types: [opened, synchronize]
     branches: [main]
 
-    
 jobs:
   trigger:
     runs-on: ubuntu-latest
@@ -21,7 +20,7 @@ jobs:
             -d '{
               "runName": "PR #${{ github.event.pull_request.number }} review",
               "overrides": {
-                "workflow": "c78393fe-638f-465b-b97c-8ea6d61dd433",
+                "workflow": "9ed0d9eb-cc23-4263-8b03-8bdf885a293e",
                 "variables": {
                   "repoOwner": "${{ github.repository_owner }}",
                   "repoName": "${{ github.event.repository.name }}",
