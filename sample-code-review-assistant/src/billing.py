@@ -13,6 +13,13 @@ def calculate_invoice_total(items, tax_rate, discount_rate, shipping_fee):
         line_total = price * quantity
         subtotal += line_total
 
+def calculate_invoice_total(items, tax_rate, discount_rate, shipping_fee):
+    subtotal = 0
+    for item in items:
+        price = item.get("price", 0)
+        quantity = item.get("quantity", 0)
+        line_total = price * quantity
+        subtotal += line_total
     discount_amount = subtotal * discount_rate
     discounted_subtotal = subtotal - discount_amount
 
