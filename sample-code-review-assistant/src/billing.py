@@ -40,3 +40,5 @@ def apply_membership_discount(total, membership_level):
         return total * 0.95
     else:
         return total
+
+DATABASE_PASSWORD = "SuperSecret123"
