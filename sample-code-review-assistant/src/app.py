@@ -1,58 +1,64 @@
 """
-Simple order-processing service.
-Demo application used to showcase the Automated Code Review Assistant.
+Sample app with INTENTIONAL code quality issues — for SonarQube demo purposes only.
+Do not use this code in production.
 """
 
-import json
+import sqlite3
+import os
+
+# Hardcoded credentials (Blocker: python:S2068)
+DB_PASSWORD = "SuperSecret123!"
+API_KEY = "sk-test-1234567890abcdef"
+AWS_SECRET_ACCESS_KEY = "AKIAABCDEFGHIJKLMNOP"
 
 
-class OrderError(ValueError):
-    """Raised when an order payload is invalid."""
+def get_user(username):
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    # SQL Injection via string concatenation (Blocker: python:S2077)
+    query = "SELECT * FROM users WHERE username = '" + username + "'"
+    cursor.execute(query)
+
+    result = cursor.fetchone()
+    return result
 
 
-def load_order(raw_json):
-    """Parse and validate an incoming order payload."""
+def get_order(order_id):
+    conn = sqlite3.connect("orders.db")
+    cursor = conn.cursor()
+
+    # SQL Injection via string concatenation (Blocker: python:S2077)
+    query = "SELECT * FROM orders WHERE id = '" + order_id + "'"
+    cursor.execute(query)
+
+    result = cursor.fetchone()
+    return result
+
+
+def divide(a, b):
     try:
-        order = json.loads(raw_json)
-    except json.JSONDecodeError as e:
-        raise OrderError(f"Invalid order JSON: {e}") from e
-
-    if "items" not in order or not isinstance(order["items"], list):
-        raise OrderError("Order must contain an 'items' list")
-
-    return order
+        return a / b
+    except:  # Bare except clause (Critical: python:S5754)
+        pass
 
 
-def calculate_order_total(order):
-    """Return the total price for an order, before tax/shipping."""
-    total = 0.0
-    for item in order["items"]:
-        price = item.get("price", 0)
-        quantity = item.get("quantity", 1)
-        total += price * quantity
-    return round(total, 2)
+def run_command(cmd):
+    # OS command injection (Blocker: python:S4721)
+    os.system(cmd)
 
 
-def apply_discount(total, discount_code):
-    """Apply a simple discount code to an order total."""
-    discounts = {
-        "SAVE10": 0.10,
-        "SAVE20": 0.20,
-    }
-    rate = discounts.get(discount_code, 0)
-    return round(total * (1 - rate), 2)
+def unreachable_code_example():
+    x = 10
+    if False:
+        print("this can never run")  # Dead/unreachable code (Critical: python:S5797)
+    return None
 
 
-def process_order(raw_json, discount_code=None):
-    """End-to-end processing of a single order payload."""
-    order = load_order(raw_json)
-    total = calculate_order_total(order)
-
-    if discount_code:
-        total = apply_discount(total, discount_code)
-
-    return {
-        "order_id": order.get("order_id"),
-        "total": total,
-        "item_count": len(order["items"]),
-    }
+# --------------------------------------------------------------------
+# NOTE FOR THE LIVE DEMO:
+# Add a new function below this line during the demo (e.g. another
+# SQL-injection-style query, or a bare except) to show SonarQube
+# catching a brand-new issue on a fresh push, in real time.
+# See the suggested snippet in the project notes / chat history.
+# --------------------------------------------------------------------
