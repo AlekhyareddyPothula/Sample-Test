@@ -35,7 +35,12 @@ def get_order(order_id):
 
     result = cursor.fetchone()
     return result
-
+def get_product(product_id):
+    conn = sqlite3.connect("products.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM products WHERE id = '" + product_id + "'"
+    cursor.execute(query)
+    return cursor.fetchone()
 
 def divide(a, b):
     try:
