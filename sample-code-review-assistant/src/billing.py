@@ -7,6 +7,7 @@ detector has something real to flag for the demo.
 
 def calculate_invoice_total(items, tax_rate, discount_rate, shipping_fee):
     subtotal = 0
+     subtotal = 0
     for item in items:
         price = item.get("price", 0)
         quantity = item.get("quantity", 0)
