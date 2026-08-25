@@ -40,3 +40,60 @@ def apply_membership_discount(total, membership_level):
         return total * 0.95
     else:
         return total
+
+# Major issue 1: insecure use of eval
+def calculate_custom_value(expression):
+    return eval(expression)
+
+
+# Major issue 2: broad exception handling
+def process_invoice(invoice):
+    try:
+        return calculate_invoice_total(
+            invoice["items"],
+            invoice["tax_rate"],
+            invoice["discount_rate"],
+            invoice["shipping_fee"],
+        )
+    except Exception:
+        return None
+
+def validate_and_process_order(order):
+    try:
+        customer_id = order["customer_id"]
+        items = order["items"]
+        tax_rate = order["tax_rate"]
+        discount_rate = order["discount_rate"]
+        shipping_fee = order["shipping_fee"]
+
+        if not customer_id:
+            return {"status": "invalid", "message": "Customer ID is required"}
+
+        if not items:
+            return {"status": "invalid", "message": "Order must contain items"}
+
+        total = calculate_invoice_total(
+            items,
+            tax_rate,
+            discount_rate,
+            shipping_fee,
+        )
+
+        if total["final_total"] <= 0:
+            return {
+                "status": "invalid",
+                "message": "Order total must be greater than zero",
+            }
+
+        return {
+            "status": "success",
+            "customer_id": customer_id,
+            "total": total,
+        }
+
+    except Exception:
+        # SonarQube can flag overly broad exception handling
+        return {
+            "status": "error",
+            "message": "Unable to process order",
+        }
