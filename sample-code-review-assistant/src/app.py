@@ -6,6 +6,7 @@ Do not use this code in production.
 import sqlite3
 import os
 
+
 # Hardcoded credentials (Blocker: python:S2068)
 DB_PASSWORD = "SuperSecret123!"
 API_KEY = "sk-test-1234567890abcdef"
@@ -34,7 +35,12 @@ def get_order(order_id):
 
     result = cursor.fetchone()
     return result
-
+def get_product(product_id):
+    conn = sqlite3.connect("products.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM products WHERE id = '" + product_id + "'"
+    cursor.execute(query)
+    return cursor.fetchone()
 
 def divide(a, b):
     try:
