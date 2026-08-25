@@ -6,6 +6,7 @@ Do not use this code in production.
 import sqlite3
 import os
 
+
 # Hardcoded credentials (Blocker: python:S2068)
 DB_PASSWORD = "SuperSecret123!"
 API_KEY = "sk-test-1234567890abcdef"
