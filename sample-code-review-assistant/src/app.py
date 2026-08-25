@@ -3,6 +3,7 @@ Sample app with INTENTIONAL code quality issues, for SonarQube testing only.
 Do not use this code in production.
 """
 
+
 import sqlite3
 import os
 
