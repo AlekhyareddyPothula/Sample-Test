@@ -31,7 +31,9 @@ def calculate_invoice_total(items, tax_rate, discount_rate, shipping_fee):
         "shipping_fee": shipping_fee,
         "final_total": final_total,
     }
-
+# Hardcoded credentials (Blocker: python:S2068)
+DB_PASSWORD = "SuperSecret123!"
+API_KEY = "sk-test-1234567890abcdef"
 
 def apply_membership_discount(total, membership_level):
     if membership_level == "gold":
