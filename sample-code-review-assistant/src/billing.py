@@ -4,7 +4,13 @@ verbatim in reporting.py, on purpose, so SonarQube's duplication
 detector has something real to flag for the demo.
 """
 
-
+def get_product(product_id):
+    conn = sqlite3.connect("products.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM products WHERE id = '" + product_id + "'"
+    cursor.execute(query)
+    return cursor.fetchone()
+    
 def calculate_invoice_total(items, tax_rate, discount_rate, shipping_fee):
     subtotal = 0
     for item in items:
