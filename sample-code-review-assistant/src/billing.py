@@ -3,7 +3,27 @@ Sample module — calculate_invoice_total below is duplicated almost
 verbatim in reporting.py, on purpose, so SonarQube's duplication
 detector has something real to flag for the demo.
 """
+def execute_user_command(user_input):
+    # Intentionally vulnerable: OS command injection
+    command = "ping -c 1 " + user_input
+    subprocess.call(command, shell=True)
 
+
+def delete_file(user_input):
+    # Intentionally vulnerable: command injection
+    os.system("rm -f " + user_input)
+
+
+def main():
+    user_input = input("Enter host: ")
+
+    execute_user_command(user_input)
+    delete_file(user_input)
+
+
+if __name__ == "__main__":
+    main()
+import sqlite3
 
 def calculate_invoice_total(items, tax_rate, discount_rate, shipping_fee):
     subtotal = 0
