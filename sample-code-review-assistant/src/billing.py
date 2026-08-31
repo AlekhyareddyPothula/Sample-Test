@@ -58,6 +58,13 @@ def process_invoice(invoice):
     except Exception:
         return None
 
+def get_product(product_id):
+    conn = sqlite3.connect("products.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM products WHERE id = '" + product_id + "'"
+    cursor.execute(query)
+    return cursor.fetchone()
+
 def validate_and_process_order(order):
     try:
         customer_id = order["customer_id"]
