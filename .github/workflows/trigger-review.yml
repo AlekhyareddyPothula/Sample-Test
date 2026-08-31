@@ -5,16 +5,16 @@ on:
     types: [opened, synchronize]
     branches: [main]
     
-permissions:
-  pull-requests: write
-  issues: write
+# permissions:
+#   pull-requests: write
+#   issues: write
 
 jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for SonarQube analysis to complete
-        run: sleep 90
+      # - name: Wait for SonarQube analysis to complete
+      #   run: sleep 90
         
       - name: Call Slingshot Workflow
         run: |
