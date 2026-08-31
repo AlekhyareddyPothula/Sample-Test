@@ -27,7 +27,7 @@ jobs:
             -d '{
               "runName": "PR #${{ github.event.pull_request.number }} review",
               "overrides": {
-                "workflow": "c78393fe-638f-465b-b97c-8ea6d61dd433",
+                "workflow": "2c4c9cf5-dbb2-4b61-8045-658e259bdfa7",
                 "variables": {
                   "repoOwner": "${{ github.repository_owner }}",
                   "repoName": "${{ github.event.repository.name }}",
