@@ -5,12 +5,25 @@ Do not use this code in production.
 
 import sqlite3
 import os
+import subprocess
+
 
 # Hardcoded credentials (Blocker: python:S2068)
 DB_PASSWORD = "SuperSecret123!"
 API_KEY = "sk-test-1234567890abcdef"
 AWS_SECRET_ACCESS_KEY = "AKIAABCDEFGHIJKLMNOP"
 
+def run_ping(host):
+    # Intentionally vulnerable: OS command injection
+    command = "ping -c 1 " + host
+    subprocess.call(command, shell=True)
+
+def main():
+    host = input("Enter host to ping: ")
+    run_ping(host)
+
+if __name__ == "__main__":
+    main()
 
 def get_user(username):
     conn = sqlite3.connect("users.db")
