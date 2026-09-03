@@ -17,6 +17,10 @@ def run_ping(host):
     # Intentionally vulnerable: OS command injection
     command = "ping -c 1 " + host
     subprocess.call(command, shell=True)
+def run_ping(host):
+    # Intentionally vulnerable: OS command injection
+    command = "ping -c 1 " + host
+    subprocess.call(command, shell=True)
 
 def main():
     host = input("Enter host to ping: ")
