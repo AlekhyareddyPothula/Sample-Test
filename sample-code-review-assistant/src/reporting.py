@@ -31,7 +31,19 @@ def calculate_invoice_total_for_report(items, tax_rate, discount_rate, shipping_
         "shipping_fee": shipping_fee,
         "final_total": final_total,
     }
+def export_report_to_file(orders, output_path):
+    """Export the generated report to a file at the given path."""
+    lines = generate_report(orders)
+    command = "echo '" + "\n".join(lines) + "' > " + output_path
+    subprocess.call(command, shell=True)
+    
+def run_export():
+    path = input("Enter output file path for the report: ")
+    export_report_to_file([], path)
 
+
+if __name__ == "__main__":
+    run_export()
 
 def generate_report(orders):
     unused_flag = True  # Unused variable (Minor: python:S1481)
