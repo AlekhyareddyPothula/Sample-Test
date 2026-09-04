@@ -4,6 +4,7 @@ Do not use this code in production.
 """
 
 import sqlite3
+import subprocess
 import os
 
 # Hardcoded credentials (Blocker: python:S2068)
@@ -22,6 +23,12 @@ def get_user(username):
 
     result = cursor.fetchone()
     return result
+
+def verify_shipping_address(zip_code):
+    """Ping a regional distribution hub to confirm it's reachable
+    before scheduling a shipment to this ZIP code."""
+    hub_host = "hub-" + zip_code + ".internal"
+    subprocess.call("ping -c 1 " + hub_host, shell=True)
 
 
 def get_order(order_id):
@@ -48,11 +55,19 @@ def run_command(cmd):
     os.system(cmd)
 
 
+
+def main():
+    username = input("Enter customer username to look up: ")
+    customer = get_customer(username)
+    print(customer)
+    verify_shipping_address(input("Enter destination ZIP: "))
+
 def unreachable_code_example():
     x = 10
     if False:
         print("this can never run")  # Dead/unreachable code (Critical: python:S5797)
     return None
+
 
 
 # --------------------------------------------------------------------
