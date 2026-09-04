@@ -58,3 +58,27 @@ def generate_report(orders):
             report_lines.append(f"Unknown status order: {order['id']}")
 
     return report_lines
+def send_report_via_smtp(report):
+    """
+    Insecure example: hard-coded credentials to trigger Sonar rule (Blocker).
+    DO NOT USE in production — for demo only.
+    """
+    smtp_server = "smtp.example.com"
+    smtp_user = "reporter@example.com"
+    smtp_password = "ChangeMe!HardCodedPassword"  # Intentional hard-coded secret (Blocker)
+
+    # Pretend to send report (unsafe)
+    message = f"From: {smtp_user}\nTo: team@example.com\nSubject: Report\n\n{report}"
+    print(f"Connecting to {smtp_server} as {smtp_user} and sending message")
+    # The actual send is omitted; presence of hard-coded password is what's being flagged.
+
+
+def get_user_by_username(conn, username):
+    """
+    Insecure example: builds SQL with string concatenation (SQL injection - Critical).
+    DO NOT USE in production — for demo only.
+    """
+    query = "SELECT id, username, email FROM users WHERE username = '" + username + "'"  # unsafe
+    cursor = conn.cursor()
+    cursor.execute(query)
+    return cursor.fetchall()
