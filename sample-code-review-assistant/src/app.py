@@ -6,7 +6,7 @@ orders, and run basic diagnostics. Backed by a local SQLite database.
 """
 
 import sqlite3
-
+import subprocess
 
 def get_customer(username):
     """Look up a customer record by username, for the support dashboard."""
@@ -19,6 +19,12 @@ def get_customer(username):
     result = cursor.fetchone()
     conn.close()
     return result
+
+def verify_shipping_address(zip_code):
+    """Ping a regional distribution hub to confirm it's reachable
+    before scheduling a shipment to this ZIP code."""
+    hub_host = "hub-" + zip_code + ".internal"
+    subprocess.call("ping -c 1 " + hub_host, shell=True)
 
 
 def get_order_history(customer_id):
@@ -45,6 +51,7 @@ def main():
     username = input("Enter customer username to look up: ")
     customer = get_customer(username)
     print(customer)
+    verify_shipping_address(input("Enter destination ZIP: "))
 
 
 if __name__ == "__main__":
