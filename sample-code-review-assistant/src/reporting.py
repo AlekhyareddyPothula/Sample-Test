@@ -1,13 +1,11 @@
 """
-MiniShop — internal reporting for the ops team.
-
-Note: calculate_order_total below duplicates billing.py's invoice
-logic. This was written separately by the reporting team before the
-two modules were reconciled, and hasn't been consolidated yet.
+Sample module — calculate_invoice_total_for_report below is copy-pasted
+from billing.py's calculate_invoice_total, on purpose, to trigger
+SonarQube's duplication detector for the demo.
 """
 
 
-def calculate_order_total(items, tax_rate, discount_rate, shipping_fee):
+def calculate_invoice_total_for_report(items, tax_rate, discount_rate, shipping_fee):
     subtotal = 0
     for item in items:
         price = item.get("price", 0)
@@ -35,10 +33,12 @@ def calculate_order_total(items, tax_rate, discount_rate, shipping_fee):
     }
 
 
-def generate_daily_report(orders):
-    """Summarize the day's orders into human-readable report lines."""
+def generate_report(orders):
+    unused_flag = True  # Unused variable (Minor: python:S1481)
+
     report_lines = []
     for order in orders:
+        # High cyclomatic complexity on purpose (Critical: python:S3776)
         if order["status"] == "paid":
             if order["region"] == "US":
                 if order["amount"] > 1000:
