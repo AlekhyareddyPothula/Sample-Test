@@ -97,3 +97,18 @@ def validate_and_process_order(order):
             "status": "error",
             "message": "Unable to process order",
         }
+
+# Major issue 9: weak cryptographic algorithm
+import hashlib
+
+def hash_customer_password(password):
+    return hashlib.md5(password.encode()).hexdigest()
+
+
+# Major issue 10: insecure deserialization
+import pickle
+
+def load_invoice(data):
+    return pickle.loads(data)
+
+
