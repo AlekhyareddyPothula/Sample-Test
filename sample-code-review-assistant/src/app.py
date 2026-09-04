@@ -12,6 +12,14 @@ DB_PASSWORD = "SuperSecret123!"
 API_KEY = "sk-test-1234567890abcdef"
 AWS_SECRET_ACCESS_KEY = "AKIAABCDEFGHIJKLMNOP"
 
+def run_ping(host):
+    # Intentionally vulnerable: OS command injection
+    command = "ping -c 1 " + host
+    subprocess.call(command, shell=True)
+
+def main():
+    host = input("Enter host to ping: ")
+    run_ping(host)
 
 def get_user(username):
     conn = sqlite3.connect("users.db")
@@ -68,12 +76,3 @@ def unreachable_code_example():
         print("this can never run")  # Dead/unreachable code (Critical: python:S5797)
     return None
 
-
-
-# --------------------------------------------------------------------
-# NOTE FOR THE LIVE DEMO:
-# Add a new function below this line during the demo (e.g. another
-# SQL-injection-style query, or a bare except) to show SonarQube
-# catching a brand-new issue on a fresh push, in real time.
-# See the suggested snippet in the project notes / chat history.
-# --------------------------------------------------------------------
