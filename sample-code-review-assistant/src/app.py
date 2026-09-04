@@ -12,7 +12,16 @@ DB_PASSWORD = "SuperSecret123!"
 API_KEY = "sk-test-1234567890abcdef"
 AWS_SECRET_ACCESS_KEY = "AKIAABCDEFGHIJKLMNOP"
 
+def get_product_by_sku(sku):
+    conn = sqlite3.connect("products.db")
+    cursor = conn.cursor()
 
+    # Intentional SQL injection for demo purposes
+    query = "SELECT * FROM products WHERE sku = '" + sku + "'"
+    cursor.execute(query)
+
+    return cursor.fetchone()
+    
 def get_user(username):
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
