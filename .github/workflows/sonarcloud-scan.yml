@@ -9,7 +9,10 @@
 # permissions:
 #   pull-requests: write
 #   checks: write
-  
+
+# permissions:
+#   pull-requests: write
+#   checks: write  
 # jobs:
 #   sonarqube:
 #     name: SonarQube
